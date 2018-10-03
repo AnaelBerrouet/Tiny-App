@@ -15,6 +15,23 @@
             <li><a href="/urls/new">Create New</a></li>
         </ul>
     </div>
+</div>
 
+<div style="display: flex; justify-content: space-between;">
+    <% if(!username) { %>
+        <div style="display: flex;">
+            <form method="POST" action="/login" style="display: flex;">
+                <input type="text" name="username" placeholder="username">
+                <input type="submit" name="submitButton" value="Login">
+            </form>
+        </div>
+    <% } else {%>
+        <div class="nav navbar-nav" style="display: flex;">
+            <p class="nav navbar-nav"><strong>User: </strong><%= username %> </p>
+            <form method="POST" action="/logout" style="display: flex;">
+                <input type="submit" name="submitButton" value="Logout">
+            </form>
+        </div>
+    <% } %>
 </div>
 </nav>
