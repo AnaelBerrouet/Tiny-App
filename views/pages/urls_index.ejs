@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <% include ../partials/head %>
+</head>
+<body>
+  <header>
+    <% include ../partials/header %>
+  </header>
+  <ul>
+    <% for (var key in urls) { %>
+      <li>
+        <p>key: <%= key %>  -  url: <%= urls[key] %></p>
+        <span>
+          <a href="/urls/<%= key %>">Edit</a>
+        </span>
+        <span>
+        <form method="POST" action="/urls/<%= key %>/delete">
+          <input type="submit" value="Delete">
+        </form>
+        </span>
+      </li>
+    <% } %>
+  </ul>
+    <p><a href="/urls/new">Shorten a new URL!</a></p>
+</body>
+</html>
