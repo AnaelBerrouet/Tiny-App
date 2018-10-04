@@ -1,0 +1,32 @@
+<!-- views/pages/register.ejs -->
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <% include ../partials/head %>
+</head>
+
+<body class="container">
+
+    <header>
+        <% include ../partials/header %>
+    </header>
+
+    <main class="container">
+        <form method="POST" action="/register">
+            <label for="email">Email:</label>
+            <input type="email" name="email" placeholder="username@something.com" size="25">
+            <label for="password">Password:</label>
+            <input type="password" name="password" placeholder="Password">
+            <input type="submit" name="submitButtom">
+        </form>
+    </main>
+
+    <footer>
+        <% include ../partials/footer %>
+    </footer>
+
+</body>
+
+</html>
