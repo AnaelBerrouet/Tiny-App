@@ -6,7 +6,9 @@
 let express = require('express');
 let app = express();
 
-var cookieParser = require('cookie-parser')
+//Other requires
+const cookieParser = require('cookie-parser')
+const bcrypt = require('bcrypt');
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
@@ -45,14 +47,15 @@ const users = {
   "userRandomID": {
     id: "userRandomID",
     email: "user@example.com",
-    password: "purple-monkey-dinosaur"
+    password: bcrypt.hashSync("purple-monkey-dinosaur", 10)
   },
  "user2RandomID": {
     id: "user2RandomID",
     email: "user2@example.com",
-    password: "dishwasher-funk"
+    password: bcrypt.hashSync("dishwasher-funk",10)
   },
 };
+
 
 //#############################################
 //~~~~~~~~~~~~~~~~~~ UTILITY FUNCTIONS ~~~~~~~~~~~~~~~~~~~~~
@@ -80,7 +83,6 @@ function filterByAttribute(filteredObj, attrib, value) {
   return fileredObjArray.filter((user) => { return user[attrib] == value});
 }
 
-// console.log(filterByAttribute(users, "email", "user@example.com"));
 
 //#############################################
 //~~~~~~~~~~~~~~~~~~ GET ROUTES ~~~~~~~~~~~~~~~~~~~~~
@@ -172,7 +174,7 @@ app.post("/login", (req, res) => {
   if(!matchingUser.length){
     res.status(403).send({ error: "Invalid email" });
   }
-  else if(matchingUser[0].password !== req.body.password) {
+  else if(!bcrypt.compareSync(req.body.password, matchingUser[0].password)) {
     res.status(403).send({ error: "Invalid password" });
   }
   else{
@@ -200,7 +202,8 @@ app.post("/register", (req, res) => {
     res.status(400).send({ error: "Email already registered." });
   } else {
     let id = generateRandomString();
-    users[id] = {id: id, email: req.body.email, password: req.body.password};
+    let hashedPassword = bcrypt.hashSync(req.body.password, 10);
+    users[id] = {id: id, email: req.body.email, password: hashedPassword};
     res.cookie("user_id", id);
     res.redirect("/urls");
   }
