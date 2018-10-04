@@ -9,14 +9,14 @@
   </header>
   <div>
   <ul>
-    <% for (var key in urls) { %>
+    <% for (var url of urls) { %>
       <li>
-        <p>key: <%= key %>  -  url: <%= urls[key] %></p>
+        <p>TinyApp url: <a href="http://localhost:8080/u/<%= url.shortUrl %>">http://localhost:8080/u/<%= url.shortUrl %></a>  -  url: <%= url.longUrl %></p>
         <span>
-          <a href="/urls/<%= key %>">Edit</a>
+          <a href="/urls/<%= url.shortUrl %>">Edit</a>
         </span>
         <span>
-        <form method="POST" action="/urls/<%= key %>/delete">
+        <form method="POST" action="/urls/<%= url.shortUrl %>/delete">
           <input type="submit" value="Delete">
         </form>
         </span>

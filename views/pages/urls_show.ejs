@@ -7,9 +7,9 @@
   <header>
     <% include ../partials/header %>
   </header>
-  <h2>Short URL: <strong><a href="/u/<%= shortUrl %>"><%= shortUrl %></a></strong></h2>
-    <form method="POST" action="/urls/<%= shortUrl %>">
-      <input type="text" name="longUrl" value="<%= longUrl %>" size="30">
+  <h2>Short URL: <strong><a href="/u/<%= url.shortUrl %>"><%= url.shortUrl %></a></strong></h2>
+    <form method="POST" action="/urls/<%= url.shortUrl %>">
+      <input type="text" name="longUrl" value="<%= url.longUrl %>" size="30">
       <input type="submit" name="updateButton" value="update">
     </form>
   </ul>
