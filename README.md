@@ -1,6 +1,6 @@
 # Tiny-App
 
-## TinyURl clone
+## TinyURL clone
 ### Usage:
 This web application is used for condensing urls to smaller urls to then be used as redirects to any website of your choosing! Simply register, add urls that you'd like to share and Tiny-App will automatically provide with a tiny url!
 
