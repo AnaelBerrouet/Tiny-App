@@ -112,7 +112,6 @@ function filterByAttribute(filteredObj, attrib, value) {
 //DEFINE SERVER FUNCTIONALITY (ROUTES ETC)
 //Home page
 app.get("/", (req, res) => {
-  console.log
   res.render('pages/index',{user: users[req.session.user_id]});
 });
 
@@ -155,8 +154,6 @@ app.get("/urls/new", (req, res) => {
 app.get("/urls/:shortUrl", (req, res) => {
 
   if(req.session.user_id == urlDatabase[req.params.shortUrl].user_id) {
-
-    console.log(urlDatabase[req.params.shortUrl]);
     res.render('pages/urls_show', {
       url: urlDatabase[req.params.shortUrl],
       user: users[req.session.user_id],
@@ -222,7 +219,6 @@ app.post('/urls', (req, res) => {
 //Add login cookie
 app.post("/login", (req, res) => {
   let matchingUser = filterByAttribute(users, "email", req.body.email);
-  console.log(matchingUser);
   if(!matchingUser.length){
     res.status(403).send({ error: "Invalid email" });
   }
