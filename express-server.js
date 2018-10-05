@@ -8,8 +8,8 @@ let app = express();
 
 //Other requires
 const cookieSession = require('cookie-session');
-// const cookieParser = require('cookie-parser')
 const bcrypt = require('bcrypt');
+const methodOverride = require('method-override');
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
@@ -17,6 +17,9 @@ app.set('view engine', 'ejs');
 //#############################################
 //~~~~~~~~~~~~~~~~~~ MIDDLEWARE ~~~~~~~~~~~~~~~~~~~~~
 //#############################################
+
+// override with POST having ?_method=DELETE
+app.use(methodOverride('_method'));
 
 // app.use(cookieParser());
 app.use(cookieSession({
@@ -193,7 +196,7 @@ app.post("/login", (req, res) => {
 
 //Add logout and clear cookie
 app.post("/logout", (req, res) => {
-  res.clearCookie("user_id");
+  req.session = null;
   res.redirect("/urls");
 });
 
@@ -220,16 +223,25 @@ app.post("/register", (req, res) => {
   }
 });
 
+//#############################################
+//~~~~~~~~~~~~~~~~~~ DELETE - ROUTES ~~~~~~~~~~~~~~~~~~~~~
+//#############################################
+
 //DELETE - remove url
-app.post("/urls/:shortUrl/delete", (req, res) => {
+app.delete("/urls/:shortUrl", (req, res) => {
   if(req.session.user_id == urlDatabase[req.params.shortUrl].user_id) {
     delete urlDatabase[req.params.shortUrl];
   }
   res.redirect("/urls");//, {user: users[req.session.user_id]});
 });
 
+
+//#############################################
+//~~~~~~~~~~~~~~~~~~ PUT - ROUTES ~~~~~~~~~~~~~~~~~~~~~
+//#############################################
+
 //UPDATE - Edit url
-app.post("/urls/:shortUrl", (req, res) => {
+app.put("/urls/:shortUrl", (req, res) => {
   if(req.session.user_id == urlDatabase[req.params.shortUrl].user_id) {
     urlDatabase[req.params.shortUrl] = {
     shortUrl: req.params.shortUrl,
