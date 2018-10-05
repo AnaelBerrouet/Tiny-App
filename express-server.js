@@ -1,5 +1,5 @@
 //#############################################
-//~~~~~~~~~~~~~~~~~~ SETUP - REQUIRES ~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~ SETUP & REQUIRES ~~~~~~~~~~~~~~~~~~~~~
 //#############################################
 
 //load in express
@@ -21,7 +21,7 @@ app.set('view engine', 'ejs');
 // app.use(cookieParser());
 app.use(cookieSession({
   name: 'session',
-  keys: ["fasdfasdf"],
+  keys: ["fasdfasdfSecretsPrecious"],
 
   // Cookie Options
   maxAge: 24 * 60 * 60 * 1000 // 24 hours
@@ -93,7 +93,7 @@ function filterByAttribute(filteredObj, attrib, value) {
 
 
 //#############################################
-//~~~~~~~~~~~~~~~~~~ GET ROUTES ~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~ GET - ROUTES ~~~~~~~~~~~~~~~~~~~~~
 //#############################################
 
 //DEFINE SERVER FUNCTIONALITY (ROUTES ETC)
@@ -158,7 +158,7 @@ app.get("/u/:shortURL", (req, res) => {
 
 
 //#############################################
-//~~~~~~~~~~~~~~~~~~ POST ROUTES ~~~~~~~~~~~~~~~~~~~~~
+//~~~~~~~~~~~~~~~~~~ POST - ROUTES ~~~~~~~~~~~~~~~~~~~~~
 //#############################################
 
 //Add URL to database
@@ -197,14 +197,17 @@ app.post("/logout", (req, res) => {
   res.redirect("/urls");
 });
 
+//handle user registration
 app.post("/register", (req, res) => {
+
+  //check for empty registration fields
   if(!req.body.email || !req.body.password){
     console.log(`status: 400-1`);
     res.status(400).send({ error: "Invalid username or password" });
   }
 
+  //check if email matches any user in database
   let emailMatches = filterByAttribute(users, "email", req.body.email);
-
   if(emailMatches.length) {
     console.log(`status: 400-2`);
     res.status(400).send({ error: "Email already registered." });
