@@ -11,7 +11,7 @@
   <ul>
     <% for (var url of urls) { %>
       <li>
-        <p>TinyApp url: <a href="http://localhost:8080/u/<%= url.shortUrl %>">http://localhost:8080/u/<%= url.shortUrl %></a>  -  url: <%= url.longUrl %></p>
+        <p>TinyApp url: <a href="/u/<%= url.shortUrl %>">http://localhost:8080/u/<%= url.shortUrl %></a>  -  url: <%= url.longUrl %></p>
         <span>
           <a href="/urls/<%= url.shortUrl %>">Edit</a>
         </span>

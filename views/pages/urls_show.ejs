@@ -7,13 +7,16 @@
   <header>
     <% include ../partials/header %>
   </header>
-  <h2>Short URL: <strong><a href="/u/<%= url.shortUrl %>">http://localhost:8080/u/<%= url.shortUrl %></a></strong></h2>
+
+  <h2>Short URL: <strong><a href="http://localhost:8080/u/<%= url.shortUrl %>">http://localhost:8080/u/<%= url.shortUrl %></a></strong></h2>
     <h2><strong>Visits: <%= url.visits %></strong></h2>
     <h2><strong>Unique Visits: <%= url["unique-visits"] %></strong></h2>
+
     <form method="POST" action="/urls/<%= url.shortUrl %>?_method=PUT">
-      <input type="text" name="longUrl" value="<%= url.longUrl %>" size="30">
+      <input type="text" name="longUrl" placeholder="<%= url.longUrl %>" size="30">
       <input type="submit" name="updateButton" value="update">
     </form>
+
   </ul>
 
   <div class="container">

@@ -155,6 +155,8 @@ app.get("/urls/new", (req, res) => {
 app.get("/urls/:shortUrl", (req, res) => {
 
   if(req.session.user_id == urlDatabase[req.params.shortUrl].user_id) {
+
+    console.log(urlDatabase[req.params.shortUrl]);
     res.render('pages/urls_show', {
       url: urlDatabase[req.params.shortUrl],
       user: users[req.session.user_id],
@@ -167,7 +169,9 @@ app.get("/urls/:shortUrl", (req, res) => {
 
 //Redirect to actual long URL website
 app.get("/u/:shortURL", (req, res) => {
-
+  if(urlDatabase[req.params.shortURL].longUrl.slice(0,4) !== "http") {
+    urlDatabase[req.params.shortURL].longUrl = "http://" + urlDatabase[req.params.shortURL].longUrl;
+  }
   //add to the number of visits + 1
   urlDatabase[req.params.shortURL].visits += 1;
 
@@ -181,7 +185,6 @@ app.get("/u/:shortURL", (req, res) => {
   if(!req.session.visitor_id) {
     req.session.visitor_id = id;
     urlDatabase[req.params.shortURL]["unique-visits"] += 1;
-
   }
 
   //check if the you have ever visited the url
@@ -190,7 +193,6 @@ app.get("/u/:shortURL", (req, res) => {
   }
 
   visitors[req.params.shortURL][req.session.visitor_id].push(Date());
-
 
   let longURL = urlDatabase[req.params.shortURL].longUrl;
   res.redirect(longURL);
@@ -282,11 +284,7 @@ app.delete("/urls/:shortUrl", (req, res) => {
 //UPDATE - Edit url
 app.put("/urls/:shortUrl", (req, res) => {
   if(req.session.user_id == urlDatabase[req.params.shortUrl].user_id) {
-    urlDatabase[req.params.shortUrl] = {
-    shortUrl: req.params.shortUrl,
-    longUrl: req.body.longUrl,
-    user_id: req.session.user_id
-    };
+    urlDatabase[req.params.shortUrl]["longUrl"] = req.body.longUrl;
   }
   res.redirect("/urls");//, {user: users[req.session.user_id]});
 });
