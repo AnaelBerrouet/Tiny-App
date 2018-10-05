@@ -15,5 +15,19 @@
       <input type="submit" name="updateButton" value="update">
     </form>
   </ul>
+
+  <div class="container">
+    <h2>Unique Visitors:</h2>
+      <ul>
+        <% for(let user in visits) {%>
+        <li><h3><%= user %><h3></li>
+          <ul>
+            <% for(let visit of visits[user]) {%>
+            <li><%= visit %></li>
+            <% } %>
+          </ul>
+        <% } %>
+      </ul>
+  </div>
 </body>
 </html>

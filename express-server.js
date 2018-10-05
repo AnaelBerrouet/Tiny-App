@@ -157,7 +157,8 @@ app.get("/urls/:shortUrl", (req, res) => {
   if(req.session.user_id == urlDatabase[req.params.shortUrl].user_id) {
     res.render('pages/urls_show', {
       url: urlDatabase[req.params.shortUrl],
-      user: users[req.session.user_id]
+      user: users[req.session.user_id],
+      visits: visitors[req.params.shortUrl]
     });
   } else {
     res.redirect('/urls');
@@ -166,13 +167,25 @@ app.get("/urls/:shortUrl", (req, res) => {
 
 //Redirect to actual long URL website
 app.get("/u/:shortURL", (req, res) => {
+
+  //add to the number of visits + 1
   urlDatabase[req.params.shortURL].visits += 1;
 
+  //if url has never been used create the enttry in the database
+  if(!visitors[req.params.shortURL]) {
+    visitors[req.params.shortURL] = {};
+  }
+
+  //check if you have an id
   let id = generateRandomString();
   if(!req.session.visitor_id) {
     req.session.visitor_id = id;
     urlDatabase[req.params.shortURL]["unique-visits"] += 1;
-    visitors[req.params.shortURL] = {};
+
+  }
+
+  //check if the you have ever visited the url
+  if(!visitors[req.params.shortURL][req.session.visitor_id]) {
     visitors[req.params.shortURL][req.session.visitor_id] = [];
   }
 
