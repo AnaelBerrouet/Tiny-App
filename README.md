@@ -4,7 +4,7 @@
 ### Usage:
 This web application is used for condensing urls to smaller urls to then be used as redirects to any website of your choosing! Simply register, add urls that you'd like to share and Tiny-App will automatically provide with a tiny url!
 
-!["Screenshot of Home Page"](https://github.com/AnaelBerrouet/Tiny-App/blob/master/home.png)
+!["Screenshot of Home Page"](https://github.com/AnaelBerrouet/Tiny-App/blob/master/homepage.png)
 
 !["Screenshot of Login Page"](https://github.com/AnaelBerrouet/Tiny-App/blob/master/login.png)
 
