@@ -45,12 +45,16 @@ const urlDatabase = {
   "b2xVn2": {
     shortUrl: "b2xVn2",
     longUrl: "http://www.lighthouselabs.ca",
-    user_id: "userRandomID"
+    user_id: "userRandomID",
+    visits: 100000000000,
+    "unique-visits": 1000
   },
   "9sm5xK": {
     shortUrl: "9sm5xK",
     longUrl: "http://www.google.com",
-    user_id: "user2RandomID"
+    user_id: "user2RandomID",
+    visits: 10000000,
+    "unique-visits": 10
   }
 };
 
@@ -65,6 +69,12 @@ const users = {
     email: "user2@example.com",
     password: bcrypt.hashSync("dishwasher-funk",10)
   },
+};
+
+const visitors = {
+  "9sm5xk" : {
+    "userRandomID": [Date()]
+  }
 };
 
 
@@ -102,6 +112,7 @@ function filterByAttribute(filteredObj, attrib, value) {
 //DEFINE SERVER FUNCTIONALITY (ROUTES ETC)
 //Home page
 app.get("/", (req, res) => {
+  console.log
   res.render('pages/index',{user: users[req.session.user_id]});
 });
 
@@ -135,7 +146,7 @@ app.get("/urls/new", (req, res) => {
   if(req.session.user_id){
     res.render('pages/urls_new', {user: users[req.session.user_id]});
   } else {
-    res.redirect("/login")
+    res.redirect("/login");
   }
 
 });
@@ -155,6 +166,19 @@ app.get("/urls/:shortUrl", (req, res) => {
 
 //Redirect to actual long URL website
 app.get("/u/:shortURL", (req, res) => {
+  urlDatabase[req.params.shortURL].visits += 1;
+
+  let id = generateRandomString();
+  if(!req.session.visitor_id) {
+    req.session.visitor_id = id;
+    urlDatabase[req.params.shortURL]["unique-visits"] += 1;
+    visitors[req.params.shortURL] = {};
+    visitors[req.params.shortURL][req.session.visitor_id] = [];
+  }
+
+  visitors[req.params.shortURL][req.session.visitor_id].push(Date());
+
+
   let longURL = urlDatabase[req.params.shortURL].longUrl;
   res.redirect(longURL);
 });
@@ -173,7 +197,9 @@ app.post('/urls', (req, res) => {
   urlDatabase[shortUrl] = {
     shortUrl: shortUrl,
     longUrl: longUrl,
-    user_id: user_id
+    user_id: user_id,
+    visits: 0,
+    "unique-visits": 0
   };
   res.redirect('/urls/' + shortUrl);
 });
@@ -181,7 +207,7 @@ app.post('/urls', (req, res) => {
 //Add login cookie
 app.post("/login", (req, res) => {
   let matchingUser = filterByAttribute(users, "email", req.body.email);
-
+  console.log(matchingUser);
   if(!matchingUser.length){
     res.status(403).send({ error: "Invalid email" });
   }
@@ -192,12 +218,6 @@ app.post("/login", (req, res) => {
     req.session.user_id = matchingUser[0].id;
     res.redirect("/");
   }
-});
-
-//Add logout and clear cookie
-app.post("/logout", (req, res) => {
-  req.session = null;
-  res.redirect("/urls");
 });
 
 //handle user registration
@@ -221,6 +241,12 @@ app.post("/register", (req, res) => {
     req.session.user_id = id;
     res.redirect("/urls");
   }
+});
+
+//Add logout and clear cookie
+app.post("/logout", (req, res) => {
+  req.session = null;
+  res.redirect("/urls");
 });
 
 //#############################################
