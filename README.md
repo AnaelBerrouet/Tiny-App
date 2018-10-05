@@ -17,6 +17,7 @@ This web application is used for condensing urls to smaller urls to then be used
   - bcrypt
   - body-parser
   - cookie-session
+  - method-override
 
 ### Getting Started:
   * Run the "npm install" command to install all dependencies
